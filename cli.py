@@ -14,6 +14,9 @@ parser.add_argument('--csv', default='attendance.csv', help='Path to attendance 
 parser.add_argument('--threshold', type=float, default=75, help='Attendance %% threshold')
 args = parser.parse_args()
 
+name = input("Enter your name: ")
+usn = input("Enter your USN: ")
+
 try:
     df = pd.read_csv(args.csv)
     df.columns = df.columns.str.strip()
@@ -68,13 +71,13 @@ if not missing_professors.empty:
     print(missing_professors[['Subject']])
 
 for _, row in merged_df.iterrows():
-    prompt = f"Subject: {row['Subject']}, Attendance: {row['Attendance %']:.1f}%, Professor: {row['Professor_Name']}"
+    prompt = f"Subject: {row['Subject']}, Attendance: {row['Attendance %']:.1f}%, Professor: {row['Professor_Name']}, Student Name: {name}, USN: {usn}. "
 
     response = client.models.generate_content(
         model="gemini-3.6-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
-            system_instruction="You are a student writing to your professor about low attendance. The email should be polite, concise, and respectful. It should request guidance on how to improve attendance and suggest possible solutions such as completing assignments or attending extra sessions.",
+            system_instruction="You are a student writing to your professor about low attendance. The email should be polite, concise, and respectful. It should request guidance on how to improve attendance and suggest possible solutions such as completing assignments or attending extra sessions.Replace _ with space in Professor's name and Subject name and use full name for both.",
             temperature=0.3
         )
     )
