@@ -22,7 +22,9 @@ cd attendance-agent-cli
 2. Create and activate a virtual environment:
 
 python -m venv venv
+
 venv\Scripts\activate # Windows
+
 source venv/bin/activate # macOS/Linux
 
 
